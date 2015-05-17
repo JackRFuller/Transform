@@ -15,10 +15,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public bool smooth;
         public float smoothTime = 5f;
 
-
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
-
+        public bool useController;
 
         public void Init(Transform character, Transform camera)
         {
@@ -29,8 +28,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public void LookRotation(Transform character, Transform camera)
         {
-            float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
-            float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
+            float yRot = 0;
+            float xRot = 0;
+
+            if (!useController)
+            {
+                xRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
+                yRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
+            }
+            else
+            {
+                xRot = CrossPlatformInputManager.GetAxis("JoystickX") * XSensitivity;
+                yRot = CrossPlatformInputManager.GetAxis("JoystickY") * YSensitivity;
+            }
 
             m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
             m_CameraTargetRot *= Quaternion.Euler (-xRot, 0f, 0f);

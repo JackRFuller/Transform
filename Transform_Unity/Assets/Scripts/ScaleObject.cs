@@ -237,8 +237,8 @@ public class ScaleObject : MonoBehaviour {
 
     void OnCollisionEnter()
     {
-        PlayerColliding = true;
-        GetComponent<Renderer>().material = PlayerCollidingOn;
+        //PlayerColliding = true;
+        //GetComponent<Renderer>().material = PlayerCollidingOn;
     }
 
     void OnCollisionExit()

@@ -2,8 +2,9 @@
 using System.Collections;
 
 public class PlayerAction : MonoBehaviour {
-    
 
+    private bool rtCanShoot;
+    private bool ltCanShoot;
 	// Use this for initialization
 	void Start () {
 	
@@ -12,11 +13,13 @@ public class PlayerAction : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetMouseButton(0))
+        Transform cam = Camera.main.gameObject.transform;
+        if (Input.GetMouseButton(0) || Input.GetAxisRaw("Fire1") == -1)
         {
+            Debug.Log("ScaleUp");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Physics.Raycast(cam.position, cam.forward, out hit, 100))
             {
                 Debug.DrawLine(ray.origin, hit.point,Color.green);
                 if (hit.collider.tag == "Scalable")
@@ -26,17 +29,17 @@ public class PlayerAction : MonoBehaviour {
                 
             }
         }
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) || Input.GetAxisRaw("Fire1") == 1)
         {
+            Debug.Log("ScaleDown");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Physics.Raycast(cam.position, cam.forward, out hit, 100))
             {
                 Debug.DrawLine(ray.origin, hit.point, Color.red);
                 if (hit.collider.tag == "Scalable")
                 {
-                    hit.collider.gameObject.GetComponent<ScaleObject>().DecreaseObjectSize();
-                    
+                    hit.collider.gameObject.GetComponent<ScaleObject>().DecreaseObjectSize();                  
                 }
 
             }
