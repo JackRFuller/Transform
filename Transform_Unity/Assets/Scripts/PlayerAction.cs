@@ -5,6 +5,7 @@ public class PlayerAction : MonoBehaviour {
 
     private bool rtCanShoot;
     private bool ltCanShoot;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -14,9 +15,10 @@ public class PlayerAction : MonoBehaviour {
 	void Update () {
 
         Transform cam = Camera.main.gameObject.transform;
-        if (Input.GetMouseButton(0) || Input.GetAxisRaw("Fire1") == -1)
+        ControllerDetection();
+
+        if (rtCanShoot)
         {
-            Debug.Log("ScaleUp");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(cam.position, cam.forward, out hit, 100))
@@ -29,9 +31,8 @@ public class PlayerAction : MonoBehaviour {
                 
             }
         }
-        if (Input.GetMouseButton(1) || Input.GetAxisRaw("Fire1") == 1)
+        if (ltCanShoot)
         {
-            Debug.Log("ScaleDown");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(cam.position, cam.forward, out hit, 100))
@@ -46,6 +47,20 @@ public class PlayerAction : MonoBehaviour {
         }
 	
 	}
+
+    private void ControllerDetection()
+    {
+        if (RigidbodyFirstPersonController.ControllerInUse)
+        {
+            rtCanShoot = Input.GetAxisRaw("Fire1") == -1 ? true : false;
+            ltCanShoot = Input.GetAxisRaw("Fire1") == 1 ? true : false;
+        }
+        else
+        {
+            rtCanShoot = Input.GetMouseButton(0) ? true : false;
+            ltCanShoot = Input.GetMouseButton(1) ? true : false;
+        }
+    }
 
     void OnTriggerEnter(Collider col)
     {
