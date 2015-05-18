@@ -1,20 +1,27 @@
-Base path: /Applications/Unity/Unity.app/Contents
-Pipe name: \\.\pipe\UnityShaderCompiler-64bit-2-715284480
+Base path: C:/Program Files/Unity/Editor/Data
+Pipe name: \\.\pipe\UnityShaderCompiler-64bit-2-4540
 Cmd: getPlatforms
 Cmd: compileSnippet
-  api=0 type=0 insize=982 outsize=10907 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF VERTEXLIGHT_ON _EMISSION ok=1
+  api=1 type=0 insize=10823 outsize=131 kw= ok=1
 Cmd: compileSnippet
-  api=0 type=1 insize=982 outsize=6 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF _EMISSION ok=1
+  api=1 type=0 insize=10846 outsize=157 kw= ok=1
 Cmd: compileSnippet
-  api=0 type=0 insize=1152 outsize=8478 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF _EMISSION ok=1
+  api=1 type=1 insize=10846 outsize=2809 kw= ok=1
 Cmd: compileSnippet
-  api=0 type=1 insize=1152 outsize=6 kw=LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF _EMISSION ok=1
+  api=1 type=0 insize=33432 outsize=157 kw= ok=1
 Cmd: compileSnippet
-  api=0 type=0 insize=886 outsize=5643 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF _EMISSION ok=1
+  api=1 type=1 insize=1762 outsize=1623 kw= ok=1
 Cmd: compileSnippet
-  api=0 type=0 insize=886 outsize=6164 kw=DIRECTIONAL SHADOWS_OFF LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF VERTEXLIGHT_ON _EMISSION ok=1
+  api=1 type=1 insize=33441 outsize=4046 kw= ok=1
 Cmd: compileSnippet
-  api=0 type=1 insize=886 outsize=6 kw=DIRECTIONAL SHADOWS_SCREEN LIGHTMAP_OFF DIRLIGHTMAP_OFF DYNAMICLIGHTMAP_OFF _EMISSION ok=1
-End of pipe
+  api=0 type=0 insize=3883 outsize=5172 kw= ok=1
+Cmd: compileSnippet
+  api=0 type=0 insize=4239 outsize=4839 kw= ok=1
+Cmd: compileSnippet
+  api=0 type=1 insize=4239 outsize=6 kw= ok=1
+Unhandled exception: Readfile from pipe failed. GLE=The pipe has been ended.
+
 
 Quitting shader compiler process
+
+Crashed!

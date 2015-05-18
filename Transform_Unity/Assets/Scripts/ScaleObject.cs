@@ -27,7 +27,7 @@ public class ScaleObject : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		ParentObject = transform.parent.root.gameObject;
+		ParentObject = transform.parent.gameObject;
         OriginalMaterial = GetComponent<Renderer>().material;
 	}
 	
