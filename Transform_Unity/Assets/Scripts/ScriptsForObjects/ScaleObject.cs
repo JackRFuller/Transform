@@ -23,7 +23,16 @@ public class ScaleObject : MonoBehaviour {
     [SerializeField] bool CanBeIncreased = true;
     [SerializeField] bool CanBeDecreased = true;
     [SerializeField] bool PlayerColliding = false;
+    [SerializeField] bool RevertToOriginal;
+    private Vector3 originalScale;
+    [SerializeField] float ReversionWaitTime;
+    [SerializeField] float TimeToRevert;
     [SerializeField] Material PlayerCollidingOn;
+
+    private float currRevertTime;
+    private bool startCountdownToRevert;
+    private bool startReverting;
+    Vector3 scaleFrom;
 
 	// Use this for initialization
 	void Start () {
@@ -31,12 +40,58 @@ public class ScaleObject : MonoBehaviour {
 
 		ParentObject = useRootParent ?  transform.parent.root.gameObject : transform.parent.gameObject;
         OriginalMaterial = GetComponent<Renderer>().material;
+        originalScale = transform.parent.transform.localScale;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update ()
+    {
+        RevertScale();
+
+        if (GetComponent<Rigidbody>() == null)
+            return;
+
+        Debug.Log(GetComponent<Rigidbody>().velocity);
 	}
+
+    private void RevertScale()
+    {
+        if (!RevertToOriginal)
+            return;
+
+        if (transform.parent.transform.localScale != originalScale && !startCountdownToRevert)
+        {
+             StartCoroutine(waitToRevert(ReversionWaitTime));
+        }
+
+        if (startReverting)
+        {
+            currRevertTime += Time.deltaTime;
+            float perc = currRevertTime / TimeToRevert;
+            transform.parent.transform.localScale = Vector3.Lerp(scaleFrom, originalScale, perc);
+
+            float magScaleDiff = Mathf.Abs((transform.parent.transform.localScale - originalScale).magnitude);
+            
+            if (magScaleDiff <= 0.01f)
+            {
+                currRevertTime = 0;
+                startCountdownToRevert = false;
+                startReverting = false;
+                transform.parent.transform.localScale = originalScale;
+            }
+        }
+    }
+
+    private IEnumerator waitToRevert(float _time)
+    {
+        startCountdownToRevert = true;
+        yield return new WaitForSeconds(_time);
+        Debug.Log("WE CAN REVERT NOW");
+        startReverting = true;
+        scaleFrom = transform.parent.transform.localScale;
+        
+    }
+
     public void DecreaseObjectSize()
     {
         if (!PlayerColliding)
@@ -199,6 +254,12 @@ public class ScaleObject : MonoBehaviour {
 
     void ScaleX(string ScaleMode)
     {
+        currRevertTime = 0;
+        startCountdownToRevert = false;
+        startReverting = false;
+        scaleFrom = transform.parent.transform.localScale;
+        StopAllCoroutines();
+     
         if (ScaleMode == "Enlarge")
         {
             ParentObject.transform.localScale = new Vector3(ParentObject.transform.localScale.x + ScaleRate, ParentObject.transform.localScale.y, ParentObject.transform.localScale.z);
@@ -212,6 +273,12 @@ public class ScaleObject : MonoBehaviour {
 
     void ScaleY(string ScaleMode)
     {
+        currRevertTime = 0;
+        startCountdownToRevert = false;
+        startReverting = false;
+        scaleFrom = transform.parent.transform.localScale;
+        StopAllCoroutines();
+
         if (ScaleMode == "Enlarge")
         {
             ParentObject.transform.localScale = new Vector3(ParentObject.transform.localScale.x, ParentObject.transform.localScale.y + ScaleRate, ParentObject.transform.localScale.z);
@@ -225,6 +292,12 @@ public class ScaleObject : MonoBehaviour {
 
 	void ScaleZ(string ScaleMode)
 	{
+        currRevertTime = 0;
+        startCountdownToRevert = false;
+        startReverting = false;
+        scaleFrom = transform.parent.transform.localScale;
+        StopAllCoroutines();
+
         if (ScaleMode == "Enlarge")
         {
             ParentObject.transform.localScale = new Vector3(ParentObject.transform.localScale.x, ParentObject.transform.localScale.y, ParentObject.transform.localScale.z + ScaleRate);
@@ -236,15 +309,41 @@ public class ScaleObject : MonoBehaviour {
 		
 	}
 
-    void OnCollisionEnter()
+    //void OnCollisionEnter(Collision other)
+    //{
+    //    PlayerColliding = true;
+    //    GetComponent<Renderer>().material = PlayerCollidingOn;
+
+    //    if (other.transform.tag == "Player")
+    //    {
+    //        other.transform.parent = gameObject.transform;
+    //    }
+
+
+    //}
+
+    //void OnCollisionExit(Collision other)
+    //{
+    //    PlayerColliding = false;
+    //    GetComponent<Renderer>().material = OriginalMaterial;
+
+    //    if (other.transform.tag == "Player")
+    //    {
+    //        other.transform.parent = null;
+    //    }
+    //}
+
+    void OnTriggerStay(Collider other)
     {
-        PlayerColliding = true;
-        GetComponent<Renderer>().material = PlayerCollidingOn;
+        if (other.transform.tag == "Player")
+        {
+            other.transform.parent = gameObject.transform;
+        }
     }
 
-    void OnCollisionExit()
+    void OnTriggerExit(Collider other)
     {
-        PlayerColliding = false;
-        GetComponent<Renderer>().material = OriginalMaterial;
+        if (other.transform.tag == "Player")
+            other.transform.parent = null;
     }
 }

@@ -88,6 +88,12 @@ using UnityEditor;
         private float m_YRotation;
         private Vector3 m_GroundContactNormal;
         private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
+        GameObject standingOn;
+
+        private Vector3
+            _activeGlobalPlatformPoint,
+            _activeLocalPlatformPoint;
+        public Vector3 PlatformVelocity;
 
 
         public Vector3 Velocity
@@ -134,15 +140,43 @@ using UnityEditor;
 
 			Cursor.lockState = CursorLockMode.Locked;
 			Cursor.visible = false;
-
+ 
             RotateView();
 
             if (Input.GetButtonDown("Jump") && !m_Jump)
             {
                 m_Jump = true;
             }
+
         }
 
+        private void HandlePlatforms()
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down) * 2f, out hit))
+            {
+                if (hit.collider.gameObject.tag == "Scalable")
+                {
+                    standingOn = hit.transform.gameObject;
+                }
+            }
+            if (standingOn != null)
+            {
+                var newGlobalPlatformPoint = standingOn.transform.TransformPoint(_activeLocalPlatformPoint);
+                var moveDistance = newGlobalPlatformPoint - _activeLocalPlatformPoint;
+
+                if (moveDistance != Vector3.zero)
+                    transform.Translate(moveDistance, Space.World);
+
+                PlatformVelocity = (newGlobalPlatformPoint - _activeGlobalPlatformPoint) / Time.deltaTime;
+            }
+            else
+            {
+                PlatformVelocity = Vector3.zero;
+            }
+
+            standingOn = null;
+        }
 
         private void FixedUpdate()
         {
@@ -191,6 +225,7 @@ using UnityEditor;
                 }
             }
             m_Jump = false;
+
         }
 
 
@@ -235,14 +270,14 @@ using UnityEditor;
             if (Mathf.Abs(Time.timeScale) < float.Epsilon) return;
 
             // get the rotation before it's changed
-            float oldYRotation = transform.eulerAngles.y;
+            float oldYRotation = transform.localEulerAngles.y;
 
             mouseLook.LookRotation (transform, cam.transform);
 
             if (m_IsGrounded || advancedSettings.airControl)
             {
                 // Rotate the rigidbody velocity to match the new direction that the character is looking
-                Quaternion velRotation = Quaternion.AngleAxis(transform.eulerAngles.y - oldYRotation, Vector3.up);
+                Quaternion velRotation = Quaternion.AngleAxis(transform.localEulerAngles.y - oldYRotation, Vector3.up);
                 m_RigidBody.velocity = velRotation*m_RigidBody.velocity;
             }
         }
@@ -269,5 +304,6 @@ using UnityEditor;
                 m_Jumping = false;
             }
         }
+
     }
 

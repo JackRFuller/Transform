@@ -80,8 +80,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public MouseLook mouseLook = new MouseLook();
         public AdvancedSettings advancedSettings = new AdvancedSettings();
 
-        public bool UseController;
-        public static bool ControllerInUse;
 
         private Rigidbody m_RigidBody;
         private CapsuleCollider m_Capsule;
@@ -123,17 +121,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
-            mouseLook.useController = UseController;
-            RigidbodyFirstPersonController.ControllerInUse = UseController;
         }
 
 
         private void Update()
         {
-
-			Cursor.lockState = CursorLockMode.Locked;
-			Cursor.visible = false;
-
             RotateView();
 
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)

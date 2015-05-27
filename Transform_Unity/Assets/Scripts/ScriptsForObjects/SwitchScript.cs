@@ -4,6 +4,7 @@ using System.Collections;
 public class SwitchScript : MonoBehaviour {
 
     public GameObject Event;
+    [SerializeField] bool TwoStateSwitch;
     private GameObject player;
     bool isTriggered;
 
@@ -27,24 +28,38 @@ public class SwitchScript : MonoBehaviour {
         {
             if (Input.GetButtonDown("X"))
             {
-                if (!isTriggered)
-                    SwitchOn();
-                else
-                    SwitchOff();
+                if (TwoStateSwitch)
+                {
+                    if (!isTriggered)
+                        SwitchOn();
+                    else
+                        SwitchOff();
 
-                isTriggered = !isTriggered;
+                    isTriggered = !isTriggered;
+                }
+                else
+                {
+                    SwitchOn();
+                }
             }
         }
         else
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (!isTriggered)
-                    SwitchOn();
-                else
-                    SwitchOff();
+                if (TwoStateSwitch)
+                {
+                    if (!isTriggered)
+                        SwitchOn();
+                    else
+                        SwitchOff();
 
-                isTriggered = !isTriggered;
+                    isTriggered = !isTriggered;
+                }
+                else
+                {
+                    SwitchOn();
+                }
             }
         }
     }
