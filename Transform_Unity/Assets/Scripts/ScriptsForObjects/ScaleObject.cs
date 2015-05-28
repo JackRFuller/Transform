@@ -36,9 +36,18 @@ public class ScaleObject : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        
+        if(!useRootParent)
+        {
+            ParentObject = transform.parent.gameObject;
+        }
+        else
+        {
+          ParentObject = transform.parent.root.gameObject;  
+        }
 
 
-		ParentObject = useRootParent ?  transform.parent.root.gameObject : transform.parent.gameObject;
+		//ParentObject = useRootParent ?  transform.parent.root.gameObject : transform.parent.gameObject;
         OriginalMaterial = GetComponent<Renderer>().material;
         originalScale = transform.parent.transform.localScale;
 	}
@@ -309,29 +318,20 @@ public class ScaleObject : MonoBehaviour {
 		
 	}
 
-    //void OnCollisionEnter(Collision other)
-    //{
-    //    PlayerColliding = true;
-    //    GetComponent<Renderer>().material = PlayerCollidingOn;
+    void OnCollisionEnter(Collision other)
+    {
+       
+       GetComponent<Renderer>().material = PlayerCollidingOn;   
 
-    //    if (other.transform.tag == "Player")
-    //    {
-    //        other.transform.parent = gameObject.transform;
-    //    }
+    }
 
+    void OnCollisionExit(Collision other)
+    {
+       
+       GetComponent<Renderer>().material = OriginalMaterial;
 
-    //}
-
-    //void OnCollisionExit(Collision other)
-    //{
-    //    PlayerColliding = false;
-    //    GetComponent<Renderer>().material = OriginalMaterial;
-
-    //    if (other.transform.tag == "Player")
-    //    {
-    //        other.transform.parent = null;
-    //    }
-    //}
+    
+    }
 
     void OnTriggerStay(Collider other)
     {

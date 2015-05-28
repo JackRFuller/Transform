@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SwitchScript : MonoBehaviour {
 
-    public GameObject Event;
+    public GameObject[] Events;
     [SerializeField] bool TwoStateSwitch;
     private GameObject player;
     bool isTriggered;
@@ -65,11 +65,20 @@ public class SwitchScript : MonoBehaviour {
     }
     void SwitchOn()
     {
-        Event.BroadcastMessage("StartTrigger", SendMessageOptions.DontRequireReceiver);
+        
+        foreach(GameObject Event in Events)
+        {
+            Event.BroadcastMessage("StartTrigger", SendMessageOptions.DontRequireReceiver);
+        }
+       
     }
 
     void SwitchOff()
     {
-        Event.BroadcastMessage("StopTrigger", SendMessageOptions.DontRequireReceiver);
+        foreach(GameObject Event in Events)
+        {
+            Event.BroadcastMessage("StopTrigger", SendMessageOptions.DontRequireReceiver);
+        }
+        
     }
 }
