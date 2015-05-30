@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Reset))]
 public class MovingPlatform : MonoBehaviour
 {
 
@@ -77,6 +79,12 @@ public class MovingPlatform : MonoBehaviour
             if (loop)
                 curWaypoint = 0;
         }
+    }
+
+
+    private void Reset()
+    {
+        curWaypoint = 0;
     }
 
     private void StartTrigger()

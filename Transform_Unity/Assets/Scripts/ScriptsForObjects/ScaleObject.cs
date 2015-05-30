@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Reset))]
 public class ScaleObject : MonoBehaviour {
 
 	public enum Orientation
@@ -51,7 +52,6 @@ public class ScaleObject : MonoBehaviour {
         if (GetComponent<Rigidbody>() == null)
             return;
 
-        Debug.Log(GetComponent<Rigidbody>().velocity);
 	}
 
     private void RevertScale()

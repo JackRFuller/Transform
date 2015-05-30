@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour {
 
     public void Restart()
     {
+        EventsManager.InitReset();
         PC.transform.position = StartingPos;
     }
 }

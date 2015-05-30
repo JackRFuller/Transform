@@ -3,7 +3,8 @@ using System.Collections;
 
 public class SwitchScript : MonoBehaviour {
 
-    public GameObject Event;
+    public GameObject[] Event;
+    public float[] DelayBetweenEvents;
     [SerializeField] bool TwoStateSwitch;
     private GameObject player;
     bool isTriggered;
@@ -63,13 +64,31 @@ public class SwitchScript : MonoBehaviour {
             }
         }
     }
+
+
     void SwitchOn()
     {
-        Event.BroadcastMessage("StartTrigger", SendMessageOptions.DontRequireReceiver);
+        StartCoroutine(wait());
     }
+
+    private IEnumerator wait()
+    {
+        for (int i = 0; i < Event.Length; i++ )
+        {
+            Event[i].BroadcastMessage("StartTrigger", SendMessageOptions.DontRequireReceiver);
+            yield return new WaitForSeconds(DelayBetweenEvents[i]);
+        }      
+    }
+
 
     void SwitchOff()
     {
-        Event.BroadcastMessage("StopTrigger", SendMessageOptions.DontRequireReceiver);
+        for (int i = 0; i < Event.Length; i++)
+            Event[i].BroadcastMessage("StopTrigger", SendMessageOptions.DontRequireReceiver);
+    }
+
+    private void Reset()
+    {
+        isTriggered = false;
     }
 }
